@@ -39,15 +39,13 @@ jobs:
           path: "hg-engine"
           submodules: recursive
 
-      - name: Link Decomp to Engine
+      - name: Build hg-engine
         run: |
+          mkdir -p $GITHUB_WORKSPACE/pokeheartgold/build/heartgold.us
           cd $GITHUB_WORKSPACE/pokeheartgold
           make pokeheartgold.us.nds || true
           mkdir -p $GITHUB_WORKSPACE/hg-engine/build/heartgold.us
           cp build/heartgold.us/pokeheartgold.us.nds $GITHUB_WORKSPACE/hg-engine/rom.nds
-
-      - name: Build hg-engine
-        run: |
           cd $GITHUB_WORKSPACE/hg-engine
           unset CC
           unset CXX
