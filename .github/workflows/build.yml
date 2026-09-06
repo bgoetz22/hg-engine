@@ -140,3 +140,8 @@ jobs:
       - name: Run tests
         run: |
           scripts/run_tests.sh -c -j $(nproc)
+      - name: Upload ROM Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: custom-rom
+          path: rom.nds
