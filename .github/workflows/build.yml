@@ -34,7 +34,7 @@ jobs:
 
       - name: Download Custom Retiled Base From Google Drive
         run: |
-        curl -L "https://docs.google.com/uc?export=download&id=1gjnGZxCA_6P8wSgsynuAFV1bMUnT0HL5" -o $GITHUB_WORKSPACE/rom.NDS
+          curl -L "https://docs.google.com/uc?export=download&id=1gjnGZxCA_6P8wSgsynuAFV1bMUnT0HL5" -o $GITHUB_WORKSPACE/rom.NDS
         
                
 
