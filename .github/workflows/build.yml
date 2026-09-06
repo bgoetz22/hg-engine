@@ -27,40 +27,28 @@ jobs:
           sudo apt update
           sudo apt -y --allow-downgrades install libpng-dev build-essential cmake python3-pip python3-venv git autoconf gcc-arm-none-eabi pkg-config curl
 
-      - name: Checkout Your Repo
+      - name: Checkout Repo (decomp)
         uses: actions/checkout@v4
         with:
+          repository: "BluRosie/pokeheartgold"
+          path: "pokeheartgold"
+
+      - name: Checkout Your Repo (hg-engine)
+        uses: actions/checkout@v4
+        with:
+          path: "hg-engine"
           submodules: recursive
 
-      - name: Download Custom Retiled Base From Google Drive
+      - name: Link Decomp to Engine
         run: |
-          curl -L "https://docs.google.com/uc?export=download&id=1gjnGZxCA_6P8wSgsynuAFV1bMUnT0HL5" -o $GITHUB_WORKSPACE/rom.NDS
-        
-               
-
-
-      - name: Restore Python cache
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: ${{ runner.os }}-hg-engine-venv-${{ hashFiles('requirements.txt') }}
-
-      - name: Restore tool cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            tools/ENCODE_IMG
-            tools/adpcm-xq
-            tools/armips
-            tools/msgenc
-            tools/ndstool
-            tools/nitrogfx
-            tools/ntrWavTool.py
-            tools/o2narc
-          key: ${{ runner.os }}-hg-engine-tools-${{ hashFiles('Makefile', 'tools/source/**') }}
+          cd $GITHUB_WORKSPACE/pokeheartgold
+          make pokeheartgold.us.nds || true
+          mkdir -p $GITHUB_WORKSPACE/hg-engine/build/heartgold.us
+          cp build/heartgold.us/pokeheartgold.us.nds $GITHUB_WORKSPACE/hg-engine/rom.nds
 
       - name: Build hg-engine
         run: |
+          cd $GITHUB_WORKSPACE/hg-engine
           unset CC
           unset CXX
           make AUTO_TEST=Y -j$(nproc)
@@ -69,4 +57,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: custom-rom
-          path: test.nds
+          path: hg-engine/test.nds
