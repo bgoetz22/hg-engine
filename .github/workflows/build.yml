@@ -19,7 +19,6 @@ env:
 
 jobs:
   build:
-    if: ${{ github.repository == 'BluRosie/hg-engine' }}
     runs-on: ubuntu-22.04
 
     steps:
